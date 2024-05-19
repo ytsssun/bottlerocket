@@ -204,6 +204,7 @@ use modeled_types::KubernetesCPUManagerPolicyOption;
 use modeled_types::KubernetesEvictionKey;
 use modeled_types::KubernetesMemoryManagerPolicy;
 use modeled_types::KubernetesMemoryReservation;
+use modeled_types::MaxSharingPerGpu;
 use modeled_types::NonNegativeInteger;
 pub use variant::*;
 
@@ -307,6 +308,7 @@ struct KubernetesSettings {
     hostname_override: ValidLinuxHostname,
     // Generated in `k8s-1.25+` variants only
     seccomp_default: bool,
+    device_plugin: DevicePlugin,
 }
 
 // ECS settings.
@@ -561,4 +563,15 @@ struct OciDefaultsResourceLimit {
 struct Report {
     name: String,
     description: String,
+}
+
+#[model]
+struct DevicePlugin {
+    nvidia: NvidiaK8sDevicePluginSettings
+}
+
+#[model]
+struct NvidiaK8sDevicePluginSettings {
+    max_sharing_per_gpu: MaxSharingPerGpu,
+    rename_shared_gpu: bool,
 }

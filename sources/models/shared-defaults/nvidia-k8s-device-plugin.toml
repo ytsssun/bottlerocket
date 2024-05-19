@@ -1,0 +1,11 @@
+[metadata.settings.kubernetes.device-plugin.nvidia]
+affected-services = ["nvidia-device-plugin"]
+
+# nvidia device plugin service
+[services.nvidia-device-plugin]
+configuration-files = ["nvidia-device-plugin"]
+restart-commands = ["/bin/systemctl try-reload-or-restart nvidia-k8s-device-plugin.service"]
+
+[configuration-files.nvidia-device-plugin]
+path = "/etc/nvidia-k8s-device-plugin/settings.yaml"
+template-path = "/usr/share/templates/nvidia-k8s-device-plugin-conf"

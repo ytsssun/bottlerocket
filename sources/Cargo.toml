@@ -27,6 +27,8 @@ members = [
     "api/migration/migrations/v1.21.0/pod-infra-container-image-affected-services",
     "api/migration/migrations/v1.21.0/pod-infra-container-image-remove-settings-generator",
     "api/migration/migrations/v1.21.0/pod-infra-container-image-services",
+    "api/migration/migrations/v1.21.0/nvidia-k8s-device-plugin-metadata",
+    "api/migration/migrations/v1.21.0/nvidia-k8s-device-plugin-settings",
 
     "bloodhound",
 

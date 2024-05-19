@@ -1,6 +1,8 @@
 use super::error;
 use lazy_static::lazy_static;
 use regex::Regex;
+use scalar::traits::{Scalar, Validate};
+use scalar::ValidationError;
 use scalar_derive::Scalar;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 // Just need serde's Error in scope to get its trait methods
@@ -1409,5 +1411,47 @@ mod test_kubernetes_memory_manager_policy {
         for err in &["", "dynamic", &"a".repeat(64)] {
             KubernetesMemoryManagerPolicy::try_from(*err).unwrap_err();
         }
+    }
+}
+
+/// MaxSharingPerGpu is used to configure the replicas for the shared GPU resource.
+/// that should be greater than 2, but should not be greater than an i32::MAX.
+// Check https://github.com/NVIDIA/k8s-device-plugin/blob/092b88d74cc17c46d38823840d113c55fb238456/api/config/v1/replicas.go#L254
+// for future updates in the replicas value constraint.
+#[derive(Debug, PartialEq, Scalar)]
+pub struct MaxSharingPerGpu {
+    inner: i32,
+}
+
+impl Validate for MaxSharingPerGpu {
+    fn validate<I: Into<i32>>(input: I) -> Result<MaxSharingPerGpu, ValidationError> {
+        let inner: i32 = input.into();
+        if inner < 2 {
+            Err(ValidationError::new(
+                "number must be great than or equal to 2",
+            ))
+        } else {
+            Ok(Self { inner })
+        }
+    }
+}
+
+#[cfg(test)]
+mod test_max_sharing_per_gpu_value {
+    use super::MaxSharingPerGpu;
+    use std::convert::TryFrom;
+
+    #[test]
+    fn valid_positive_integer() {
+        assert!(MaxSharingPerGpu::try_from(2).is_ok());
+        assert!(MaxSharingPerGpu::try_from(i32::MAX).is_ok());
+        assert!(MaxSharingPerGpu::try_from(42).is_ok());
+    }
+
+    #[test]
+    fn invalid_positive_integer() {
+        assert!(MaxSharingPerGpu::try_from(i32::MIN).is_err());
+        assert!(MaxSharingPerGpu::try_from(-1).is_err());
+        assert!(MaxSharingPerGpu::try_from(1).is_err())
     }
 }
