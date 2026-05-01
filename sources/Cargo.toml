@@ -57,6 +57,7 @@ members = [
     "settings-migrations/v1.54.0/kubelet-device-plugins-mps-prefix-settings",
     "settings-migrations/v1.56.0/image-verifier-plugins-extensible",
     "settings-migrations/v1.60.0/kubernetes-topology-manager-policy-options",
+    "settings-migrations/v1.61.0/kubernetes-kubelet-extra-config-setting",
 
     "settings-plugins/aws-dev",
     "settings-plugins/aws-ecs-2",
@@ -146,6 +147,13 @@ version = "0.1.0"
 git = "https://github.com/bottlerocket-os/bottlerocket-settings-sdk"
 tag = "bottlerocket-settings-models-v0.23.0"
 version = "0.1.0"
+
+[patch."https://github.com/bottlerocket-os/bottlerocket-settings-sdk"]
+bottlerocket-defaults-helper = { git = "file:///tmp/tmp.NsxfZPY3BF", rev = "85675ad" }
+bottlerocket-modeled-types = { git = "file:///tmp/tmp.NsxfZPY3BF", rev = "85675ad" }
+bottlerocket-settings-models = { git = "file:///tmp/tmp.NsxfZPY3BF", rev = "85675ad" }
+bottlerocket-settings-plugin = { git = "file:///tmp/tmp.NsxfZPY3BF", rev = "85675ad" }
+settings-extension-oci-defaults = { git = "file:///tmp/tmp.NsxfZPY3BF", rev = "85675ad" }
 
 [profile.release]
 debug = true
